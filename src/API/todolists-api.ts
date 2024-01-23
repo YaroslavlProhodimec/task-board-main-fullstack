@@ -38,7 +38,7 @@ export const todoListApi = {
         return axiosInstance.put<ResponseType>(`/todo-lists/${todoListId}/tasks/${taskId}`, model)
     },
     createTask(todoListId: string, title: string) {
-        return axiosInstance.post<ResponseType<{ items: TaskType[] }>>(`todo-lists/${todoListId}/tasks`, {title: title})
+        return axiosInstance.post<ResponseType<any>>(`todo-lists/${todoListId}/tasks`, {title: title})
     }
 }
 

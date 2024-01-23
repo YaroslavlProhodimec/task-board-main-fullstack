@@ -62,7 +62,7 @@ const slice = createSlice({
             }
         },
 
-        addTaskAC(state, action: PayloadAction<{ task: TaskType, todolistId: string }>) {
+        addTaskAC(state, action: PayloadAction<{ task: any, todolistId: string }>) {
             state[action.payload.todolistId].unshift(action.payload.task)
         },
 

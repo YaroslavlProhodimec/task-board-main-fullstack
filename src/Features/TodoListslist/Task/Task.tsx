@@ -12,7 +12,7 @@ export type TaskPropsType = {
     changeTaskTitle: (title: string, taskId: string, todolistId: string) => void
     task: TaskType
     todoListId: string
-    entityStatus: RequestStatusType
+    entityStatus?: RequestStatusType
 }
 
 export const Task = React.memo((props: TaskPropsType) => {
@@ -31,7 +31,7 @@ export const Task = React.memo((props: TaskPropsType) => {
     return (
         <div className={props.task.status === TaskStatus.Completed ? 'isDone' : ""}>
             <Checkbox
-                disabled={props.entityStatus === "loading"}
+                // disabled={props.entityStatus === "loading"}
                 sx={{
                     color: pink[800],
                     '&.Mui-checked': {
@@ -43,7 +43,7 @@ export const Task = React.memo((props: TaskPropsType) => {
             />
             <EditSpan title={props.task.title} callback={onChangeTaskTitle} entityStatus={props.entityStatus}/>
             <IconButton
-                disabled={props.entityStatus === "loading"}
+                // disabled={props.entityStatus === "loading"}
                 aria-label="delete"
                 onClick={onClickRemoveHandler}>
                 <Delete/>
