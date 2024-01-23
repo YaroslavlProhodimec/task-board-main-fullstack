@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 const axiosInstance = axios.create({
-    baseURL: "https://task-board-main-fullstack.vercel.app",
+    baseURL: "https://back-task-board-main.vercel.app/",
 
 })
 
