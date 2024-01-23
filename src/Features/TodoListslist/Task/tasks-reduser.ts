@@ -14,17 +14,16 @@ export const setTasks = createAsyncThunk(
     async (todolistId: string, thunkAPI,) => {
         thunkAPI.dispatch(setAppStatusAC({status: "loading"}))
         const res = await todoListApi.getTasks(todolistId)
-            try {
-                if (res.status === 200) {
-                    const tasks = res.data.items
-                    thunkAPI.dispatch(setAppStatusAC({status: "succeeded"}))
-                    return {tasks, todolistId};
-                }
+        try {
+            if (res.status === 200) {
+                const tasks = res.data.items
+                thunkAPI.dispatch(setAppStatusAC({status: "succeeded"}))
+                return {tasks, todolistId};
             }
-            catch(error: any) {
-                handleServerNetworkError(error, thunkAPI.dispatch)
-                return thunkAPI.rejectWithValue(error)
-            }
+        } catch (error: any) {
+            handleServerNetworkError(error, thunkAPI.dispatch)
+            return thunkAPI.rejectWithValue(error)
+        }
     })
 
 export const removeTaskTC = createAsyncThunk(
@@ -32,20 +31,18 @@ export const removeTaskTC = createAsyncThunk(
     async (param: { taskId: string, todoListId: string }, thunkAPI) => {
         thunkAPI.dispatch(setAppStatusAC({status: "loading"}))
         const res = await todoListApi.deleteTasks(param.taskId, param.todoListId)
-             try {
-                if (res.status === 204) {
-                    thunkAPI.dispatch(setAppStatusAC({status: "succeeded"}))
-                    return {idTask: param.taskId, todolistId: param.todoListId}
-                }
-                else {
-                    handleServerAppError(res.data, thunkAPI.dispatch)
-                    return thunkAPI.rejectWithValue(Error)
-                }
-            }
-            catch(Error: any) {
-                handleServerNetworkError(Error, thunkAPI.dispatch)
+        try {
+            if (res.status === 204) {
+                thunkAPI.dispatch(setAppStatusAC({status: "succeeded"}))
+                return {idTask: param.taskId, todolistId: param.todoListId}
+            } else {
+                handleServerAppError(res.data, thunkAPI.dispatch)
                 return thunkAPI.rejectWithValue(Error)
             }
+        } catch (Error: any) {
+            handleServerNetworkError(Error, thunkAPI.dispatch)
+            return thunkAPI.rejectWithValue(Error)
+        }
     })
 
 
@@ -54,7 +51,11 @@ const slice = createSlice({
     name: 'tasks',
     initialState: InitialTasksState as TasksStateType,
     reducers: {
-        updateTaskAC(state, action: PayloadAction<{ id: string, model: UpdateDomainTaskModalTask, todolistId: string }>) {
+        updateTaskAC(state, action: PayloadAction<{
+            id: string,
+            model: UpdateDomainTaskModalTask,
+            todolistId: string
+        }>) {
             const tasks = state[action.payload.todolistId];
             const index = tasks.findIndex(t => t.id === action.payload.id);
             if (index > -1) {
@@ -100,7 +101,6 @@ const tasksReducer = slice.reducer;
 export const {updateTaskAC, addTaskAC} = slice.actions;
 
 
-
 export const addTaskTC = (todolistId: string, title: string) => (
     dispatch: Dispatch) => {
     dispatch(changeTodolistEntityStatusAC({id: todolistId, entityStatus: 'loading'}))
@@ -127,13 +127,16 @@ export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModalT
     if (!task) return console.warn("Task Not Fount in the State")
 
     const apiModel: UpdateTask = {
-        title: task.title,
-        status: task.status,
+        title: domainModel.title ?? task.title,
+        // status: task.status,
+        status: domainModel.status ?? task.status
     }
     dispatch(setAppStatusAC({status: "loading"}))
     // dispatch(changeTaskEntityStatusAC(taskId, todolistId, "loading"))
 
-    todoListApi.updateTask(todolistId, taskId, apiModel)
+    todoListApi.updateTask(todolistId, taskId,
+        apiModel
+    )
         .then(res => {
             if (res.status === 204) {
                 dispatch(updateTaskAC({id: taskId, model: domainModel, todolistId: todolistId}))
@@ -150,18 +153,13 @@ export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModalT
 }
 
 
-
 export type TasksStateType = {
     [id: string]: Array<TaskType>
 }
 
 type UpdateDomainTaskModalTask = {
     title?: string
-    description?: string
     status?: TaskStatus
-    priority?: TaskPriorities
-    startDate?: string
-    deadline?: string
 }
 
 export default tasksReducer;

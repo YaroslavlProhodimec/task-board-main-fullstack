@@ -64,9 +64,7 @@ export const TodoList = React.memo((props: TodoListComponentType) => {
                     <Delete/>
                 </IconButton>
             </h3>
-            {/*---------------------- INPUT FIELD TASK-------------------- */}
             <AddItemForm callback={addTask} disabled={props.todoList.entityStatus === 'loading'}/>
-            {/*--------------------------- MAP TASKS ------------------------*/}
             <div>
                 {
                     tasksFoTodolist?.map(task =>
@@ -82,7 +80,6 @@ export const TodoList = React.memo((props: TodoListComponentType) => {
                     )
                 }
             </div>
-            {/*----------------------------BUTTONS---------------------------*/}
             <div>
                 <Button
                     variant={props.todoList.filter === "ALL" ? "contained" : "text"}

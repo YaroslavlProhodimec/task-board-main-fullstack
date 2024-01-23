@@ -56,9 +56,6 @@ export const TodoListsList: React.FC<PropsType> = ({demo= false}) => {
     }, [dispatch])
 
     const changeTaskTitle = useCallback(
-        // (id: string, status: TaskStatus, idTodoList: string) => {
-        //     dispatch(changeTaskTC(id, {status}, idTodoList))
-
         (title: string, taskId: string, todolistId: string) => {
             dispatch(updateTaskTC(taskId, {title}, todolistId))
         }, [dispatch])
