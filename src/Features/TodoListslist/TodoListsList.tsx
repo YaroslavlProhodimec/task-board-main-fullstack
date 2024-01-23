@@ -62,8 +62,8 @@ export const TodoListsList: React.FC<PropsType> = ({demo= false}) => {
 
 
 
-    return <>
-        <Grid container style={{padding: "10px"}}>
+    return <div style={{marginLeft:'45px'}}>
+        <Grid container style={{padding: "10px",}}>
             <AddItemForm callback={addTodoList}/>
         </Grid>
         <Grid container spacing={3}>
@@ -96,5 +96,5 @@ export const TodoListsList: React.FC<PropsType> = ({demo= false}) => {
                 })
             }
         </Grid>
-    </>
+    </div>
 }

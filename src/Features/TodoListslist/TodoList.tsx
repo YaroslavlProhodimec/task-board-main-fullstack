@@ -53,8 +53,7 @@ export const TodoList = React.memo((props: TodoListComponentType) => {
     }
 
     return (
-        <div>
-            {/*---------------------TITLE TASK--------------------*/}
+        <div >
             <h3>
                 <EditSpan
                     title={props.todoList.title}
